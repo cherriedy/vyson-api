@@ -3,10 +3,9 @@ services:
     name: vyson-api
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn src.main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    startCommand: cd /opt/render/project/src && gunicorn main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.0
       - key: FIREBASE_CREDENTIALS
         sync: false
-
