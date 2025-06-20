@@ -2,10 +2,10 @@ import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from .config import get_app_settings
+from config import get_app_settings
 
-from .firebase.client import initialize_firebase_app
-from .invitations.router import router as invitations_router
+from firebase.client import initialize_firebase_app
+from invitations.router import router as invitations_router
 
 
 @asynccontextmanager
