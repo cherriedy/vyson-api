@@ -27,37 +27,50 @@ env/
 ENV/
 .env
 .venv
+env.bak/
+venv.bak/
 
-# Firebase
-*firebase-credentials*.json
-*serviceAccount*.json
-
-# Environment variables
-.env
-.env.local
-.env.development
-.env.test
-.env.production
-
-# IDE
+# IDE specific files
 .idea/
 .vscode/
 *.swp
 *.swo
 
 # Logs
-logs/
 *.log
+logs/
 
-# Test coverage
-.coverage
+# Local development settings
+.env
+.env.local
+
+# Firebase credentials
+vyson-app-firebase-adminsdk-fbsvc-9045443204.json
+
+# Coverage reports
 htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Mac OS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# pytest
 .pytest_cache/
 
-# Render specific
-.render-buildpacks/
-.render/
-
-# OS specific
-.DS_Store
-Thumbs.db
+# mypy
+.mypy_cache/
