@@ -1,7 +1,7 @@
 from typing import List, Optional, Any
 import json
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, model_validator
 
 
 class InvitationData(BaseModel):
@@ -12,6 +12,24 @@ class InvitationData(BaseModel):
     email: str
     inviter_token: str
     meeting_room_id: str
+
+
+class InvitationResponseData(BaseModel):
+    type: str
+    action: str
+    meeting_room_id: str
+
+
+class InvitationActionRequest(BaseModel):
+    registration_ids: List[str]
+    data: InvitationResponseData
+
+    @model_validator(mode='before')
+    @classmethod
+    def parse_json_from_string(cls, value: Any) -> Any:
+        if isinstance(value, str):
+            return json.loads(value)
+        return value
 
 
 class InvitationRequest(BaseModel):

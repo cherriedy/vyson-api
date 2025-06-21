@@ -2,7 +2,7 @@ from typing import List
 
 from firebase_service.client import send_firebase_multicast
 
-from invitations.schemas import InvitationRequest, InvitationResponse, MessageResponse
+from invitations.schemas import InvitationRequest, InvitationResponse, MessageResponse, InvitationActionRequest
 
 
 async def send_invitation(request: InvitationRequest) -> InvitationResponse:
@@ -15,6 +15,38 @@ async def send_invitation(request: InvitationRequest) -> InvitationResponse:
         "last_name": request.data.last_name,
         "email": request.data.email,
         "inviter_token": request.data.inviter_token,
+        "meeting_room_id": request.data.meeting_room_id,
+    }
+
+    # Send message using Firebase client
+    response = await send_firebase_multicast(request.registration_ids, data_dict)
+
+    # Process response
+    message_responses: List[MessageResponse] = []
+    for resp in response.responses:
+        if resp.success:
+            message_responses.append(
+                MessageResponse(success=True, message_id=resp.message_id)
+            )
+        else:
+            message_responses.append(
+                MessageResponse(success=False, error=str(resp.exception))
+            )
+
+    return InvitationResponse(
+        success=True,
+        success_count=response.success_count,
+        failure_count=response.failure_count,
+        responses=message_responses
+    )
+
+
+async def send_invitation_response(request: InvitationActionRequest, action: str) -> InvitationResponse:
+    """Send invitation response via Firebase Cloud Messaging."""
+    # Map request data to Firebase message format
+    data_dict = {
+        "type": request.data.type,
+        "action": action,
         "meeting_room_id": request.data.meeting_room_id,
     }
 
